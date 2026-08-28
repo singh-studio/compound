@@ -1,4 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lauren Carruthers</title>
+<meta name="description" content="Certified nutrition coach and personal trainer in Auckland. A website design concept by Singh Studio.">
+<!-- concept page: must never compete with or be mistaken for her real site -->
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lauren Carruthers">
+<meta property="og:description" content="Certified nutrition coach and personal trainer in Auckland. A website design concept by Singh Studio.">
+<meta property="og:url" content="https://singh-studio.github.io/compound/">
+<meta property="og:image" content="https://singh-studio.github.io/compound/assets/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
@@ -357,8 +371,16 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
 }
+/* the card is a group; the header is the toggle, so nested option
+   buttons stay valid and independently focusable */
+.card-hit{
+  display:block;width:100%;padding:0;margin:0;
+  background:none;border:0;text-align:left;cursor:pointer;
+}
+.card-hit:focus-visible{outline:2px solid var(--lilac);outline-offset:6px}
 </style>
-
+</head>
+<body>
 <nav class="nav">
   <div class="nav-in">
     <a class="mark" href="#top">Lauren<span>.</span></a>
@@ -575,15 +597,6 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   </div>
 </footer>
 
-<style>
-/* the card is a group; the header is the toggle, so nested option
-   buttons stay valid and independently focusable */
-.card-hit{
-  display:block;width:100%;padding:0;margin:0;
-  background:none;border:0;text-align:left;cursor:pointer;
-}
-.card-hit:focus-visible{outline:2px solid var(--lilac);outline-offset:6px}
-</style>
 
 <script>
 (function(){
@@ -819,3 +832,5 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 })();
 </script>
+</body>
+</html>
