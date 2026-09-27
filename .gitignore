@@ -3,5 +3,7 @@ OUTREACH.md
 artifact.html
 build-artifact.py
 _preview.html
+_capture.html
+build.html
 shots/
 .DS_Store
