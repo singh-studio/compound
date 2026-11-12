@@ -6,4 +6,5 @@ _preview.html
 _capture.html
 build.html
 shots/
+*.png
 .DS_Store
