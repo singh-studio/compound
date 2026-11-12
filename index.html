@@ -83,7 +83,7 @@ button{font:inherit;color:inherit}
 
 /* film grain over the whole page, so no surface is perfectly clean */
 .grain{
-  position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.055;
+  position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.075;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -150,6 +150,8 @@ button{font:inherit;color:inherit}
   .js .lines .ln>span{transform:none}
   .js .wipe>*{clip-path:none}
   .grain{display:none}
+  .js .wd>span{transform:none}
+  .curtain{display:none!important}
 }
 
 /* ============================================================
@@ -195,6 +197,13 @@ button{font:inherit;color:inherit}
   padding:.32rem .58rem;border-radius:999px;white-space:nowrap;
 }
 .nav-cta{display:none}
+@media(max-width:480px){
+  .nav-in{gap:.55rem}
+  .mark{font-size:.7rem;letter-spacing:.16em;gap:.5rem}
+  .prog{width:22px;height:22px}
+  .nav-cta{padding:.48rem .72rem;font-size:.58rem;letter-spacing:.1em}
+  .badge{font-size:.52rem;padding:.3rem .48rem;letter-spacing:.11em}
+}
 @media(max-width:900px){
   .nav-links{display:none}
   .nav-cta{
@@ -371,8 +380,8 @@ button{font:inherit;color:inherit}
   padding:1.6rem 1.7rem;
   transition:border-color var(--t1) var(--e-out),background var(--t1) var(--e-out),transform var(--t1) var(--e-out),box-shadow var(--t1) var(--e-out);
 }
-.card:hover{border-color:var(--line-2);transform:translateY(-3px);box-shadow:0 22px 50px -26px rgba(0,0,0,.9)}
-.card.on{border-color:var(--lilac);background:var(--ink-4);box-shadow:0 22px 54px -26px color-mix(in srgb,var(--plum) 75%,transparent)}
+.card:hover{border-color:var(--line-2);transform:translateY(-4px);box-shadow:0 28px 60px -26px rgba(0,0,0,.95)}
+.card.on{border-color:var(--lilac);background:var(--ink-4);box-shadow:0 22px 54px -26px color-mix(in srgb,var(--plum) 75%,transparent), inset 0 0 0 1px color-mix(in srgb,var(--lilac) 22%,transparent)}
 .card.on::before{
   content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;
   background:var(--lilac);border-radius:0 3px 3px 0;
@@ -426,7 +435,7 @@ button{font:inherit;color:inherit}
 
 .rail{position:sticky;top:96px;background:var(--ink-3);border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden;box-shadow:0 30px 70px -34px rgba(0,0,0,.9)}
 .rail-head{padding:1.4rem 1.6rem;border-bottom:1px solid var(--line);background:var(--ink-4)}
-.rail-body{padding:1.5rem 1.6rem}
+.rail-body{padding:1.5rem 1.6rem;position:relative}
 .rail-lines{list-style:none;margin:0 0 1.35rem;padding:0;display:grid;gap:.75rem;min-height:2.5rem}
 .rail-lines li{display:flex;gap:1rem;font-size:.9rem;align-items:baseline;animation:lineIn var(--t1) var(--e-out) both}
 @keyframes lineIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
@@ -569,9 +578,48 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
 <style>
 /* uppercase has no descenders, but the comma in "Hello, I'm" does */
 .lines .ln{padding-bottom:.07em;margin-bottom:-.07em;padding-inline:.06em;margin-inline:-.06em}
+
+/* --- elevation pass: curtain, words, depth ---------------------- */
+.curtain{display:none;position:fixed;inset:0;z-index:300;background:var(--ink);pointer-events:none;clip-path:inset(0 0 0 0)}
+.js .curtain{display:block}
+.js .curtain.lift{clip-path:inset(0 0 100% 0);transition:clip-path .82s var(--e-io)}
+.wd{display:inline-block;overflow:hidden;vertical-align:bottom;line-height:1.15;margin-block:-.125em}
+.js [data-words] .ln{overflow:visible}
+.js [data-words] .ln>span{transform:none}
+.js .wd>span{display:block;transform:translateY(115%);transition:transform var(--t3) var(--e-out)}
+.js .in .wd>span{transform:none}
+.hero-copy{will-change:transform,opacity}
+.hero::after,.camp::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(120% 80% at 50% 45%,transparent 55%,color-mix(in srgb,var(--ink) 70%,transparent));
+}
+.camp-grid{z-index:2}
+.ring-glow{
+  position:absolute;z-index:0;pointer-events:none;
+  right:clamp(-16rem,-6vw,-4rem);top:50%;translate:0 -50%;
+  width:clamp(30rem,52vw,50rem);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--plum) 70%,transparent),color-mix(in srgb,var(--amber) 14%,transparent) 55%,transparent 72%);
+  filter:blur(60px);opacity:.38;
+}
+.dial::before{
+  content:'';position:absolute;inset:6%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,color-mix(in srgb,var(--amber) 22%,transparent),color-mix(in srgb,var(--plum) 55%,transparent) 55%,transparent 72%);
+  filter:blur(60px);opacity:.32;
+}
+#tOnce{display:inline-block;transform-origin:right center;transition:transform .32s var(--e-out)}
+#tOnce.pulse{transform:scale(1.06)}
+.add-chip{
+  position:absolute;right:1.6rem;z-index:3;pointer-events:none;
+  font-family:'Montserrat',sans-serif;font-weight:900;font-size:.95rem;color:var(--amber);
+  font-variant-numeric:tabular-nums;
+  animation:chipUp .7s var(--e-out) both;
+}
+@keyframes chipUp{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+@media(prefers-reduced-motion:reduce){.add-chip{display:none}#tOnce.pulse{transform:none}}
 </style>
 </head>
 <body>
+<div class="curtain" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 
 <nav class="nav" id="nav">
@@ -595,12 +643,13 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
 
 <header class="hero" id="top">
   <div class="hero-bg" aria-hidden="true"></div>
+  <div class="ring-glow" aria-hidden="true"></div>
   <svg class="hero-ring" id="heroRing" viewBox="0 0 200 200" aria-hidden="true" data-par="0.12">
     <circle class="tr" cx="100" cy="100" r="98"></circle>
     <circle class="bar" id="heroBar" cx="100" cy="100" r="98"></circle>
   </svg>
   <div class="hero-grid">
-    <div>
+    <div class="hero-copy">
       <h1 class="display lines" id="heroH">
         <span class="ln"><span class="sm">Hello, I&rsquo;m</span></span>
         <span class="ln"><span>Lauren</span></span>
@@ -664,7 +713,7 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   <div class="shell">
     <div class="head">
       <p class="label rv">Build a plan</p>
-      <h2 class="display lines">
+      <h2 class="display lines" data-words>
         <span class="ln"><span>Pick what you want.</span></span>
         <span class="ln"><span>See what it costs.</span></span>
       </h2>
@@ -692,7 +741,7 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   <div class="camp-grid">
     <div>
       <p class="label rv">Online Glute Camp</p>
-      <h2 class="display lines" style="font-size:clamp(1.9rem,4.1vw,2.95rem);margin:.8rem 0 1.4rem">
+      <h2 class="display lines" data-words style="font-size:clamp(1.9rem,4.1vw,2.95rem);margin:.8rem 0 1.4rem">
         <span class="ln"><span>Tuesdays, 5pm,</span></span>
         <span class="ln"><span>from home</span></span>
       </h2>
@@ -733,7 +782,7 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   <div class="shell">
     <div class="head">
       <p class="label rv">Recipes</p>
-      <h2 class="display lines">
+      <h2 class="display lines" data-words>
         <span class="ln"><span>Easy recipes</span></span>
         <span class="ln"><span>for lazy people</span></span>
       </h2>
@@ -754,7 +803,7 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   <div class="shell">
     <div class="head">
       <p class="label rv">E-books</p>
-      <h2 class="display lines"><span class="ln"><span>Ten dollars each</span></span></h2>
+      <h2 class="display lines" data-words><span class="ln"><span>Ten dollars each</span></span></h2>
       <p class="lede rv" data-d="2">Little guides I put together for the things people ask me about most.</p>
     </div>
     <div class="books">
@@ -785,7 +834,7 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
     <div class="cmeta">
       <div>
         <p class="label rv">Contact</p>
-        <h2 class="display lines" style="font-size:clamp(2rem,5vw,3.4rem);margin:.8rem 0 0">
+        <h2 class="display lines" data-words style="font-size:clamp(2rem,5vw,3.4rem);margin:.8rem 0 0">
           <span class="ln"><span>Let&rsquo;s get</span></span>
           <span class="ln"><span>in touch!</span></span>
         </h2>
@@ -847,12 +896,50 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   window.addEventListener('load', start);
   setTimeout(start, 1200);           /* never wait on a slow font */
   var started = false;
-  function start(){
-    if(started) return; started = true;
+  var curtain = document.querySelector('.curtain');
+  function dropCurtain(){ if(curtain && curtain.parentNode){ curtain.style.display = 'none'; curtain.parentNode.removeChild(curtain); } curtain = null; }
+  setTimeout(dropCurtain, 2200);     /* failsafe: a stalled sequence can never leave the page black */
+  if(REDUCED || document.hidden) dropCurtain();
+  function reveal(){
+    ring(document.getElementById('heroBar'), 0.72);
     if(heroH) heroH.classList.add('in');
     document.querySelectorAll('.hero .rv').forEach(function(el){ el.classList.add('in'); });
-    ring(document.getElementById('heroBar'), 0.72);
   }
+  function start(){
+    if(started) return; started = true;
+    if(REDUCED || document.hidden || !curtain){
+      if(heroH) heroH.classList.add('in');
+      document.querySelectorAll('.hero .rv').forEach(function(el){ el.classList.add('in'); });
+      ring(document.getElementById('heroBar'), 0.72);
+      dropCurtain();
+      return;
+    }
+    curtain.classList.add('lift');
+    setTimeout(function(){ ring(document.getElementById('heroBar'), 0.72); }, 150);
+    setTimeout(function(){ if(heroH) heroH.classList.add('in'); }, 300);
+    setTimeout(function(){
+      document.querySelectorAll('.hero .rv').forEach(function(el){ el.classList.add('in'); });
+    }, 420);
+    setTimeout(dropCurtain, 840);
+  }
+
+  /* ---------- word-level heading reveal (opt-in via data-words) ---------- */
+  document.querySelectorAll('[data-words]').forEach(function(h){
+    var n = 0;
+    h.querySelectorAll('.ln > span').forEach(function(sp){
+      var words = sp.textContent.split(' ');
+      sp.textContent = '';
+      words.forEach(function(w, i){
+        if(i) sp.appendChild(document.createTextNode(' '));
+        var wd = document.createElement('span'), inner = document.createElement('span');
+        wd.className = 'wd';
+        inner.textContent = w;
+        inner.style.transitionDelay = (n++ * 55) + 'ms';
+        wd.appendChild(inner);
+        sp.appendChild(wd);
+      });
+    });
+  });
 
   /* ---------- reveals ---------- */
   var io = new IntersectionObserver(function(es){
@@ -889,6 +976,9 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
   var progC = progBar ? ring(progBar, 0, false) : 0;
   var parEls = [].slice.call(document.querySelectorAll('[data-par]'));
   var ticking = false;
+  var heroCopy = document.querySelector('.hero-copy'),
+      heroFigEl = document.querySelector('.hero-fig'),
+      heroRingEl = document.getElementById('heroRing');
 
   function frame(){
     ticking = false;
@@ -898,10 +988,18 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
     var p = max > 0 ? Math.min(1, y / max) : 0;
     if(progBar) progBar.style.strokeDashoffset = (progC * (1 - p)).toFixed(2);
     if(!REDUCED){
+      var hp = Math.min(1, y / vh);
       for(var i = 0; i < parEls.length; i++){
         var el = parEls[i], r = el.getBoundingClientRect();
         var d = ((r.top + r.height / 2) - vh / 2) / vh;
-        el.style.transform = 'translate3d(0,' + (d * parseFloat(el.dataset.par) * 130).toFixed(1) + 'px,0)';
+        var tf = 'translate3d(0,' + (d * parseFloat(el.dataset.par) * 130).toFixed(1) + 'px,0)';
+        if(el === heroFigEl) tf += ' scale(' + (1 - hp * 0.08).toFixed(4) + ')';
+        else if(el === heroRingEl) tf += ' rotate(' + (hp * 22).toFixed(2) + 'deg)';
+        el.style.transform = tf;
+      }
+      if(heroCopy){
+        heroCopy.style.transform = 'translate3d(0,' + (hp * -70).toFixed(1) + 'px,0)';
+        heroCopy.style.opacity = (1 - hp * 0.85).toFixed(3);
       }
     }
   }
@@ -984,6 +1082,7 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
       card.classList.toggle('on', state[s.id].on);
       hit.setAttribute('aria-pressed', String(state[s.id].on));
       render();
+      if(state[s.id].on) addChip(lineFor(s));
     });
     if(s.opts){
       card.querySelectorAll('.opt').forEach(function(b){
@@ -1068,6 +1167,27 @@ textarea.filled{border-color:var(--lilac);background:var(--ink-4)}
     nudgeEl.textContent = nudgeFor(sel);
     sendBtn.disabled = sel.length === 0;
   }
+
+  /* ---------- plan showpiece: +$ chip and total pulse ---------- */
+  var railBody = onceEl.closest('.rail-body');
+  function addChip(l){
+    if(REDUCED || document.hidden || !railBody) return;
+    var c = document.createElement('span'), b = railBody.getBoundingClientRect(), t = onceEl.getBoundingClientRect();
+    c.className = 'add-chip';
+    c.textContent = '+' + l.amount;
+    c.style.top = (t.top - b.top - 22).toFixed(0) + 'px';
+    railBody.appendChild(c);
+    setTimeout(function(){ if(c.parentNode) c.parentNode.removeChild(c); }, 760);
+  }
+  var lastOnce = onceEl.textContent;
+  new MutationObserver(function(){
+    var now = onceEl.textContent;
+    if(now === lastOnce) return;
+    lastOnce = now;
+    if(REDUCED || document.hidden || onceEl.classList.contains('pulse')) return;
+    onceEl.classList.add('pulse');
+    setTimeout(function(){ onceEl.classList.remove('pulse'); }, 320);
+  }).observe(onceEl, { childList:true, characterData:true, subtree:true });
 
   var msg = document.getElementById('message');
   sendBtn.addEventListener('click', function(){
