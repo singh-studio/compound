@@ -40,6 +40,17 @@ Her existing brand, evolved rather than replaced.
 - **Type** — Montserrat 900 uppercase for display, Figtree for body
 - **Motion** — scroll reveals, card states, and the class countdown
 
+## Before and after
+
+`/reveal/` sets the current site beside the concept, three pages at a time:
+home, services and recipes. Each comparison wipes across as it scrolls into
+view and then stays draggable, with a keyboard-accessible slider behind the
+handle. It carries no commentary on the existing site; the only words are the
+page names.
+
+Both halves are screenshots at 1440x900, so the comparison is most legible on
+a laptop. On a phone the frames are necessarily small.
+
 ## Technical
 
 A single self-contained `index.html`. Photography is embedded as base64 data
